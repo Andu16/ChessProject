@@ -24,6 +24,7 @@ public class Pawn {
     }
 
     public void setXCoordinate(int value) {
+
         this.xCoordinate = value;
     }
 
@@ -39,12 +40,20 @@ public class Pawn {
         return this.pieceColor;
     }
 
-    private void setPieceColor(PieceColor value) {
+    public void setPieceColor(PieceColor value) {
         pieceColor = value;
     }
 
-    public void Move(MovementType movementType, int newX, int newY) {
-        throw new UnsupportedOperationException("Need to implement Pawn.Move()") ;
+    public void move(MovementType movementType, int newX, int newY) {
+        if(chessBoard.isLegalBoardPosition(newX, newY) && isPawnAllowedToMove(newY,movementType)){
+            yCoordinate = newY;
+        }
+    }
+
+    private boolean isPawnAllowedToMove(int newY, MovementType movementType) {
+        return ((pieceColor.equals(PieceColor.BLACK) && newY == yCoordinate - 1)
+        || (pieceColor.equals(PieceColor.WHITE) && newY == yCoordinate + 1))
+        && movementType.equals(MovementType.MOVE);
     }
 
     @Override
@@ -53,7 +62,6 @@ public class Pawn {
     }
 
     protected String CurrentPositionAsString() {
-        String eol = System.lineSeparator();
-        return String.format("Current X: {1}{0}Current Y: {2}{0}Piece Color: {3}", eol, xCoordinate, yCoordinate, pieceColor);
+        return "Current X: " + xCoordinate + " Current Y: " + yCoordinate + "Piece Color: " + pieceColor;
     }
 }
